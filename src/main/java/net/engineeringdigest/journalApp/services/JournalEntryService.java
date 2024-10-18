@@ -28,6 +28,10 @@ public class JournalEntryService {
         userService.saveEntry(user);
     }
 
+    public void saveEntry(JournalEntry entry) {
+        journalEntryRepository.save(entry);
+    }
+
     public List<JournalEntry> getAllEntries() {
         return journalEntryRepository.findAll();
     }
