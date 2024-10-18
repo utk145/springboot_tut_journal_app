@@ -2,7 +2,9 @@ package net.engineeringdigest.journalApp.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.entity.JournalEntry;
+import net.engineeringdigest.journalApp.entity.UserEntity;
 import net.engineeringdigest.journalApp.services.JournalEntryService;
+import net.engineeringdigest.journalApp.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,30 +22,34 @@ public class JournalEntryControllerV2 {
 
     @Autowired
     private JournalEntryService journalEntryService;
-
+    @Autowired
+    private UserService userService;
 
 //    #Note: Methods inside a controller class should be public so that they can be accessed and invoked by the spring framework or external http requests
 
-    @GetMapping
-    public ResponseEntity<?> getAllJournals() {
-        List<JournalEntry> allEntries = journalEntryService.getAllEntries();
+    @GetMapping("/getAllJournalEntriesOfUser/{userName}")
+    public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName) {
+        UserEntity user = userService.findByUserName(userName);
+        List<JournalEntry> allEntries = user.getJournalEntries();
         if (allEntries != null && !allEntries.isEmpty()) {
             return new ResponseEntity<>(allEntries, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(
+                "Not found any journals related to this particular user",
+                HttpStatus.NOT_FOUND);
 
     }
 
-    @PostMapping("/create-entry")
-    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry entry) {
-        try {
-            journalEntryService.saveEntry(entry);
-            return new ResponseEntity<>(entry, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error("Exception: " + e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("/create-entry/{userName}")
+    public ResponseEntity<JournalEntry> createEntry(
+            @RequestBody JournalEntry entry,
+            @PathVariable String userName
+    ) {
+
+        journalEntryService.saveEntry(entry, userName);
+        return new ResponseEntity<>(entry, HttpStatus.CREATED);
+
     }
 
     @GetMapping("/id/{entryId}")
@@ -56,9 +62,12 @@ public class JournalEntryControllerV2 {
 
     }
 
-    @DeleteMapping("/id/{entryId}")
-    public ResponseEntity<?> deleteEntryById(@PathVariable ObjectId entryId) {
-        journalEntryService.deleteById(entryId);
+    @DeleteMapping("/id/{userName}/{entryId}")
+    public ResponseEntity<?> deleteEntryById(
+            @PathVariable ObjectId entryId,
+            @PathVariable String userName
+    ) {
+        journalEntryService.deleteById(entryId, userName);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -68,25 +77,25 @@ public class JournalEntryControllerV2 {
             @RequestBody JournalEntry newEntry
     ) {
         JournalEntry exists = journalEntryService.findById(entryId).orElse(null);
-        if (exists != null) {
-            exists.setUpdateDate(LocalDateTime.now());
-            exists.setTitle(
-                    newEntry.getTitle() != null && !newEntry.getTitle().equals("")
-                            ?
-                            newEntry.getTitle()
-                            :
-                            exists.getTitle()
-            );
-            exists.setContent(
-                    newEntry.getContent() != null && !newEntry.getContent().isEmpty()
-                            ?
-                            newEntry.getContent()
-                            :
-                            exists.getContent()
-            );
-            journalEntryService.saveEntry(exists);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-        }
+//        if (exists != null) {
+//            exists.setUpdateDate(LocalDateTime.now());
+//            exists.setTitle(
+//                    newEntry.getTitle() != null && !newEntry.getTitle().equals("")
+//                            ?
+//                            newEntry.getTitle()
+//                            :
+//                            exists.getTitle()
+//            );
+//            exists.setContent(
+//                    newEntry.getContent() != null && !newEntry.getContent().isEmpty()
+//                            ?
+//                            newEntry.getContent()
+//                            :
+//                            exists.getContent()
+//            );
+//            journalEntryService.saveEntry(exists);
+//            return new ResponseEntity<>(exists, HttpStatus.OK);
+//        }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

@@ -8,12 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document(collection = "journal_entries")
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 //@ToString
-@Data
+//@Data // Do not use this blindly as it doesn't have NoArgsConstructor, and we might need it for initializing objects during de-serialization for converting JSON to POJO(plain old java object)
 public class JournalEntry {
     @Id
     private ObjectId id;
