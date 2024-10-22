@@ -27,7 +27,7 @@ public class JournalEntryService {
             entry.setCreatedDate(LocalDateTime.now());
             JournalEntry savedEntry = journalEntryRepository.save(entry);
             user.getJournalEntries().add(savedEntry);
-            user.setUserName(null);
+//            user.setUserName(null); // Just to test if Transactional would work fine
             userService.saveEntry(user);
         } catch (Exception e) {
             System.out.println(e);
