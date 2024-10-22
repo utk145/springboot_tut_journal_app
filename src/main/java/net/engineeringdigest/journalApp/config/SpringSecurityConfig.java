@@ -23,7 +23,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        This configure is for the url endpoints
         http.authorizeRequests()
-                .antMatchers("/journal/**").authenticated()
+                .antMatchers(
+                        "/journal/**",
+                        "/user/**"
+                ).authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic();
