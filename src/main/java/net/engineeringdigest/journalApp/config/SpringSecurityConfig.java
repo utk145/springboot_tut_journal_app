@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -27,7 +28,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic();
 
-        http.csrf().disable(); // By default, in spring boot cross site request forgery protection is enabled, due to which spring security will expect us to provide a token in the request. If this isn't disabled, the requests will return a 403 forbidden. Since now, we're going to just make server-to-server call we can safely disable it.
+//        http.csrf().disable(); // By default, in spring boot cross site request forgery protection is enabled, due to which spring security will expect us to provide a token in the request. If this isn't disabled, the requests will return a 403 forbidden. Since now, we're going to just make server-to-server call we can safely disable it.
+
+        // disabling default cookies management also at the same time.
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf()
+                .disable();
+
     }
 
     @Override

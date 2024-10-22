@@ -40,7 +40,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Insufficient credentials", HttpStatus.BAD_REQUEST);
 
     }
 
