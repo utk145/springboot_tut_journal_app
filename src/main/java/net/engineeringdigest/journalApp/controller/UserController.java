@@ -36,7 +36,7 @@ public class UserController {
         String username = userObj.getUserName();
         String password = userObj.getPassword();
         if (!username.isEmpty() && !password.isEmpty()) {
-            userService.saveEntry(userObj);
+            userService.saveNewUser(userObj);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
