@@ -36,7 +36,7 @@ public class AdminController {
     }
 
 
-    @PutMapping(value = "/grantAdminAccess",produces = ,consumes = )
+    @PutMapping(value = "/grantAdminAccess")
     public ResponseEntity<String> grantAdminAccess(@RequestBody String userName) {
         System.out.println(userName);
         //////////////////////////////////// #STRUCK #STRUCK ///////////////////////////////////////////////////
