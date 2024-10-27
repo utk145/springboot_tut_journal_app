@@ -17,17 +17,17 @@
     <!--        </encoder>-->
     <!--    </appender>-->
 
+
     <!-- Rolling File Appender -->
     <appender name="myRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/myapp.log</file>
 
-        <file>logs/myJournalApp.log</file>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- File name pattern for rolled over files -->
-            <fileNamePattern>logs/myJournalApp.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>10</maxHistory> <!-- Keep logs for 10 days -->
-            <maxFileSize>5MB</maxFileSize> <!-- Maximum size of each log file -->
-            <totalSizeCap>50MB</totalSizeCap> <!-- Maximum total size of all log files -->
+            <fileNamePattern>logs/myapp.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>2MB</maxFileSize> <!-- Maximum size of each log file -->
+            <maxHistory>30</maxHistory> <!-- Keep logs for 30 days -->
+            <totalSizeCap>1GB</totalSizeCap> <!-- Maximum total size of all log files -->
         </rollingPolicy>
 
         <encoder>
@@ -35,10 +35,11 @@
         </encoder>
     </appender>
 
+
     <!-- Root Logger -->
     <root level="INFO">
         <appender-ref ref="myConsoleAppender"/>
-        <appender-ref ref="myFileAppender"/>
+        <appender-ref ref="myRollingFileAppender"/>
     </root>
 
 </configuration>
