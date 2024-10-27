@@ -8,15 +8,32 @@
     </appender>
 
     <!-- File Appender -->
-    <appender name="myFileAppender" class="ch.qos.logback.core.FileAppender">
-        <file>
-            logs/myJournalApp.log
-        </file>
+    <!--    <appender name="myFileAppender" class="ch.qos.logback.core.FileAppender">-->
+    <!--        <file>-->
+    <!--            logs/myJournalApp.log-->
+    <!--        </file>-->
+    <!--        <encoder>-->
+    <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
+
+    <!-- Rolling File Appender -->
+    <appender name="myRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/myJournalApp.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- File name pattern for rolled over files -->
+            <fileNamePattern>logs/myJournalApp.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>10</maxHistory> <!-- Keep logs for 10 days -->
+            <maxFileSize>5MB</maxFileSize> <!-- Maximum size of each log file -->
+            <totalSizeCap>50MB</totalSizeCap> <!-- Maximum total size of all log files -->
+        </rollingPolicy>
+
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
         </encoder>
     </appender>
-
 
     <!-- Root Logger -->
     <root level="INFO">
