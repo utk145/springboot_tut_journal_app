@@ -1,0 +1,3 @@
+5 Ways to Call An API in Java:
+
+https://medium.com/@archimedes.fagundes/5-ways-to-call-an-api-in-java-b3de65fb2022
