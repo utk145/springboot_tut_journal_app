@@ -14,4 +14,4 @@ spring:
 #  api:
 #    key:
 
-WEATHER_API_KEY: 0ef65d46c33449b1b1e141638232205
+WEATHER_API_KEY:
